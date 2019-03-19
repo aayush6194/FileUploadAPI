@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require("body-parser"); //post request
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const multer = require('multer');
-const port = 3001 || process.env.PORT;
+const port = 80 || process.env.PORT;
 const app = express();
 const db = require("./db");
 
