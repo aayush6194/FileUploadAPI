@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require("body-parser"); //post request
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const multer = require('multer');
-const port = 80 || process.env.PORT;
+const port =  process.env.PORT || 3007;
 const app = express();
 const db = require("./db");
 
@@ -23,7 +23,7 @@ app.use(function(req, res, next) {
 });
 
 app.post('/upload', upload.single('file'),  (req, res) => {
-  res.redirect('http://localhost:8000/Message/');
+  res.redirect('https://www.aayushh.com/Message/');
 });
 
 app.get('/', upload.single('file'),  (req, res) => {
