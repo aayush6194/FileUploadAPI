@@ -26,4 +26,8 @@ app.post('/upload', upload.single('file'),  (req, res) => {
   res.redirect('http://localhost:8000/Message/');
 });
 
+app.get('/', upload.single('file'),  (req, res) => {
+  res.send({active: true});
+});
+
 const server = app.listen(port, ()=>{console.log(`Server Running on Port:${port}.`); });
