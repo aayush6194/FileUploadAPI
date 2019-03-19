@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser"); //post request
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const url = "mongodb://aayush6194:poop12@ds041571.mlab.com:41571/portfolio";
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
 let dataSchema, data;
-const dbName = 'portfolio';
 
 module.exports = {
     connect :(collection, obj)=> {
@@ -23,5 +24,23 @@ module.exports = {
                     if(err) console.log(err)
                     console.log(res)
                     });
+     },
+
+     grid: ()=>{
+       return (new GridFsStorage({
+         url: "mongodb://aayush6194:poop12@ds041571.mlab.com:41571/portfolio",
+         file: (req, file) => {
+           return new Promise((resolve, reject) => {
+               const filename = file.originalname;
+               const fileInfo = {
+                 filename: filename,
+                 bucketName: 'uploads'
+               };
+               resolve(fileInfo);
+           });
+         }
+       }));
      }
+
+
 }
