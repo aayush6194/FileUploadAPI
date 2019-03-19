@@ -12,21 +12,21 @@ const Grid = require('gridfs-stream');
 //               //,  img: { data: Buffer, contentType: String }
 //             });
 
-const storage = new GridFsStorage({
-  url: "mongodb://aayush6194:poop12@ds041571.mlab.com:41571/portfolio",
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-        const filename = file.originalname;
-        const fileInfo = {
-          filename: filename,
-          bucketName: 'uploads'
-        };
-        resolve(fileInfo);
-    });
-  }
-});
+// const storage = new GridFsStorage({
+//   url: "mongodb://aayush6194:poop12@ds041571.mlab.com:41571/portfolio",
+//   file: (req, file) => {
+//     return new Promise((resolve, reject) => {
+//         const filename = file.originalname;
+//         const fileInfo = {
+//           filename: filename,
+//           bucketName: 'uploads'
+//         };
+//         resolve(fileInfo);
+//     });
+//   }
+// });
 
-const upload = multer({ storage });
+//const upload = multer({ storage });
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -36,9 +36,9 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.post('/upload', upload.single('file'),  (req, res) => {
-  res.redirect('https://www.aayushh.com/Message/');
-});
+// app.post('/upload', upload.single('file'),  (req, res) => {
+//   res.redirect('https://www.aayushh.com/Message/');
+// });
 
 app.get('/',  (req, res) => {
   res.send({active: true});
