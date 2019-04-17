@@ -1,46 +1,47 @@
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser"); //post request
+const bodyParser = require("body-parser");
 const urlencodedParser = bodyParser.urlencoded({extended: false});
-const url = "mongodb://aayush6194:poop12@ds041571.mlab.com:41571/portfolio";
-const GridFsStorage = require('multer-gridfs-storage');
-const Grid = require('gridfs-stream');
+const url = "mongodb://aayush:aayush1@ds042888.mlab.com:42888/dreammy";
+
 let dataSchema, data;
 
 module.exports = {
     connect :(collection, obj)=> {
-               mongoose.connect(url, { useNewUrlParser: true });
+               mongoose.connect(url, { useNewUrlParser: true }).catch((err) => {console.log(err)});
                dataSchema = new mongoose.Schema(obj);
-               data = mongoose.model('data', dataSchema);
+               data = mongoose.model(collection, dataSchema);
                console.log("Connected!")
               },
 
     insert: (obj)=>{
               let temp = new data(obj);
-              temp.save((err)=>{ if(err)console.log(err);  console.log("Saved!") });
+              temp.save((err)=>{ if(err)console.log(err);  console.log("Saved!") }).catch((err) => {console.log(err)});
             },
 
-     find: (obj)=>{
-                data.find(obj, (err, res)=>{
-                    if(err) console.log(err)
-                    console.log(res)
-                    });
-     },
+     find:  (obj)=>{
+                 data.find(obj).then((items)=> {
+                   console.log(items);
+                   return items;
+                  }) .catch((err) => {console.log(err)});
 
-     grid: ()=>{
-       return (new GridFsStorage({
-         url: "mongodb://aayush6194:poop12@ds041571.mlab.com:41571/portfolio",
-         file: (req, file) => {
-           return new Promise((resolve, reject) => {
-               const filename = file.originalname;
-               const fileInfo = {
-                 filename: filename,
-                 bucketName: 'uploads'
-               };
-               resolve(fileInfo);
-           });
-         }
-       }));
-     }
+     },
+     count: async (obj)=>{
+     let size = 0;
+    await data.countDocuments(obj).then((count) => {
+     size = count;
+    }).catch((err) => {console.log(err)});
+    return size;
+  },
+  findSomeFields: async (obj, fields)=>{
+           return await data.find(obj, fields)
+           .catch((err) => {console.log(err)});
+  },
+
+  update: (obj, newValue)=>{
+        data.updateOne(obj,  {$set: newValue},  {upsert: true})
+            .catch((err) => {console.log(err)});
+  }
+
 
 
 }
